@@ -55,7 +55,7 @@ conda install -c anaconda lxml
 
 cd "your dir path"
 pyrcc5 -o libs/resources.py resources.qrc
-python labelImg.py
+python autolabelImg.py
 缺什么，再pip 补安装即可
 ```
 

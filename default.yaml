@@ -1,0 +1,9 @@
+Last loaded image folder: E:/data_chuli/images
+Last loaded image name: 1735109319_3645.jpg
+Last loaded label folder: E:/data_chuli/labels
+check_ls: null
+classes: []
+conf: 0.5
+filter_conf: 0.85
+iou: 0.85
+model: E:/best.pt

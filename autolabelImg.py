@@ -46,6 +46,9 @@ from tools.change_labels import rework_classes
 from tools.repeat_filter import main as filter_main
 import torch
 
+import sys
+sys.setrecursionlimit(sys.getrecursionlimit() * 5)
+
 __appname__ = 'AutoLabelImg'
 
 
@@ -1421,16 +1424,15 @@ class MainWindow(QMainWindow, WindowMixin):
             # model.predict(self.filepath, save_txt=True, save_path=self.default_save_dir, device=self.device,
             #               conf=self.conf, iou=self.iou, classes=self.classes)
 
-            folder_path = os.path.dirname(self.default_save_dir)
-            b = os.path.basename(folder_path)  # b 为日期文件夹名
-            a = os.path.dirname(folder_path)  # a 为再上一层路径
-
+            a = os.path.dirname(self.default_save_dir)
+            b = os.path.basename(self.default_save_dir)
             model.predict(self.filepath,
                 save_txt=True,  # 保存成 YOLO 标签
-                save=True,  # 保存结果（默认 runs/predict）
                 project=a,  # 指定保存的主目录
                 name=b,  # 子目录名
                 exist_ok=True ,
+                conf=self.conf,
+                iou=self.iou,
                 device=self.device,
             )
             rework_classes(lab_path)
@@ -1488,16 +1490,14 @@ class MainWindow(QMainWindow, WindowMixin):
                 # model.predict(detect_images[i], save_txt=True, save_path=self.default_save_dir, device=self.device,
                 #               conf=self.conf, iou=self.iou)
 
-                folder_path = os.path.dirname(self.default_save_dir)
-                b = os.path.basename(folder_path)  # b 为日期文件夹名
-                a = os.path.dirname(folder_path)  # a 为再上一层路径
+                a = os.path.dirname(self.default_save_dir)
+                b = os.path.basename(self.default_save_dir)
 
                 model.predict(
                     detect_images[i],
-                    save_txt=True,
-                    save=True,
-                    project=a,
-                    name=b,
+                    save_txt=True,  # 保存成 YOLO 标签
+                    project=a,  # 指定保存的主目录
+                    name=b,  # 子目录名
                     exist_ok=True,
                     device=self.device,
                     conf=self.conf,

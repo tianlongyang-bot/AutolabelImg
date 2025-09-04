@@ -297,8 +297,11 @@ class BasePredictor:
             self.setup_source(source if source is not None else self.args.source)
 
             # Check if save_dir/ label file exists
+            # if self.args.save or self.args.save_txt:
+            #     (self.save_dir / "labels" if self.args.save_txt else self.save_dir).mkdir(parents=True, exist_ok=True)
+
             if self.args.save or self.args.save_txt:
-                (self.save_dir / "labels" if self.args.save_txt else self.save_dir).mkdir(parents=True, exist_ok=True)
+                (self.save_dir if self.args.save_txt else self.save_dir).mkdir(parents=True, exist_ok=True)
 
             # Warmup model
             if not self.done_warmup:
@@ -364,8 +367,11 @@ class BasePredictor:
                 f"{(min(self.args.batch, self.seen), 3, *im.shape[2:])}" % t
             )
         if self.args.save or self.args.save_txt or self.args.save_crop:
-            nl = len(list(self.save_dir.glob("labels/*.txt")))  # number of labels
-            s = f"\n{nl} label{'s' * (nl > 1)} saved to {self.save_dir / 'labels'}" if self.args.save_txt else ""
+            # nl = len(list(self.save_dir.glob("labels/*.txt")))  # number of labels
+            # s = f"\n{nl} label{'s' * (nl > 1)} saved to {self.save_dir / 'labels'}" if self.args.save_txt else ""
+            nl = len(list(self.save_dir.glob("*.txt")))  # number of labels
+            s = f"\n{nl} label{'s' * (nl > 1)} saved to {self.save_dir}" if self.args.save_txt else ""
+
             # LOGGER.info(f"Results saved to {colorstr('bold', self.save_dir)}{s}")
         self.run_callbacks("on_predict_end")
 
@@ -415,7 +421,8 @@ class BasePredictor:
             match = re.search(r"frame (\d+)/", s[i])
             frame = int(match[1]) if match else None  # 0 if frame undetermined
 
-        self.txt_path = self.save_dir / "labels" / (p.stem + ("" if self.dataset.mode == "image" else f"_{frame}"))
+        self.txt_path = self.save_dir / (p.stem + ("" if self.dataset.mode == "image" else f"_{frame}"))
+
         string += "{:g}x{:g} ".format(*im.shape[2:])
         result = self.results[i]
         result.save_dir = self.save_dir.__str__()  # used in other locations

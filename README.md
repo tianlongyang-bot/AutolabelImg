@@ -94,17 +94,3 @@ Next  | F12
 2.载入崩溃：删除C:\Users\用户名路径下的.labelImgSettings.pkl文件。<br/>
 3.小概率画框/调框/删框时崩溃，未解决。重启、F5载入即可。<br/>
 4.新手使用时，记得备份img, 以防误删
-
-
-<br/>
-
-## Contact information
-
-*WeChat*：SW_7396        <br/>
-*Email 163*：personalmailboxbyT@163.com
-
-二次开发:
-*Email 163*：pengxiang5656@163.com
-
-
-
